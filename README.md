@@ -25,5 +25,8 @@ https://github.com/jogeonuuuu/smart-vision/blob/ae718efa64e6b0df40854ad1e9748df9
 
 
 ### 결과영상
+- Jetson board에서 Gstreamer Server 실행
+- windows의 powershell에서 gstreamer client 실행
+
 ![image](https://github.com/user-attachments/assets/4f8d13a5-752c-4144-a012-e4f1265f495a)
 <img src="https://github.com/user-attachments/assets/b182f596-a090-4c8f-bc7d-4d5fd93120fc" width="70%" height="70%"/>
