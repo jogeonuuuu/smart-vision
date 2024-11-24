@@ -26,14 +26,14 @@ public:
     }
 };
 
-bool compare_info(Info& a, Info& b) { //¿À¸§Â÷¼ø
+bool compare_info(Info& a, Info& b) { //ì˜¤ë¦„ì°¨ìˆœ
     return a.get_distance() < b.get_distance();
 }
 
 
 int main(void)
 {
-    signal(SIGINT, ctrlc); // SIGINT ½ÅÈ£¸¦ Àâ¾Æ³»´Â ½Ã±×³Î ÇÚµé·¯ ¼³Á¤
+    signal(SIGINT, ctrlc); // SIGINT ì‹ í˜¸ë¥¼ ì¡ì•„ë‚´ëŠ” ì‹œê·¸ë„ í•¸ë“¤ëŸ¬ ì„¤ì •
 
     VideoCapture source("7_lt_ccw_100rpm_in.mp4"); //CAP_FFMPEG
     if (!source.isOpened()) {
@@ -43,31 +43,31 @@ int main(void)
     Mat frame, toUse;
     Mat labels, stats, centroids;
 
-    Point2d past_point(320, 45), present_point(320, 45); //°ú°Å ¹× ÇöÀç ÁÂÇ¥
-    double distance; //ÁßÁ¡(º¸µåÀ¸·ÎºÎÅÍ °¡Àå °¡±î¿î °´Ã¼¿ÍÀÇ °Å¸®
+    Point2d past_point(320, 45), present_point(320, 45); //ê³¼ê±° ë° í˜„ì¬ ì¢Œí‘œ
+    double distance; //ì¤‘ì (ë³´ë“œìœ¼ë¡œë¶€í„° ê°€ì¥ ê°€ê¹Œìš´ ê°ì²´ì™€ì˜ ê±°ë¦¬
 
     while (true)
     {
         source >> frame;
         if (frame.empty()) {
             cerr << "frame empty!" << endl; break;
-            //'return -1'¸¦ ÇÏ°ÔµÇ¸é ´ÙÀÌ³ª¹Í¼¿À» ºñÈ°¼ºÈ­½ÃÅ°´Â closeÇÔ¼ö°¡ ½ÇÇàµÇÁö ¾Ê°í ÄÚµå°¡ Á¾·áµÇ±â ¶§¹®¿¡
-            //´ÙÀ½¿¡ ½ÇÇàÀ» ½ÃÅ°°ÔµÇ¸é ¿À·ù°¡ ³¯ ¼ö ÀÖÀ½.
+            //'return -1'ë¥¼ í•˜ê²Œë˜ë©´ ë‹¤ì´ë‚˜ë¯¹ì…€ì„ ë¹„í™œì„±í™”ì‹œí‚¤ëŠ” closeí•¨ìˆ˜ê°€ ì‹¤í–‰ë˜ì§€ ì•Šê³  ì½”ë“œê°€ ì¢…ë£Œë˜ê¸° ë•Œë¬¸ì—
+            //ë‹¤ìŒì— ì‹¤í–‰ì„ ì‹œí‚¤ê²Œë˜ë©´ ì˜¤ë¥˜ê°€ ë‚  ìˆ˜ ìˆìŒ.
         }
-        if (ctrl_c_pressed) break; //"ctrl+c" ÀÔ·Â½Ã
+        if (ctrl_c_pressed) break; //"ctrl+c" ì…ë ¥ì‹œ
 
-        toUse = frame(Rect(0, frame.rows * 3 / 4, frame.cols, frame.rows / 4)); //(1) ¿µ»óÀÇ ¾Æ·§ºÎºĞ 1/4
-        cvtColor(toUse, toUse, COLOR_BGR2GRAY); //(2) ±×·¹ÀÌ½ºÄÉÀÏ¿µ»óÀ¸·Î º¯È¯
-        toUse += 100 - mean(toUse)[0]; //(3) ¿µ»óÀÇ Æò±Õ¹à±â¸¦ ¿øÇÏ´Â °ªÀ¸·Î Á¶Á¤
-        //°á°ú¿µ»óÀÇ ÇÈ¼¿°ª = ÀÔ·Â¿µ»óÀÇ ÇÈ¼¿°ª + (¿øÇÏ´Â Æò±Õ ¹à±â°ª - ÀÔ·Â¿µ»óÀÇ Æò±Õ¹à±â)
-        //mean()ÀÇ ¹İÈ¯ÇüÀº Scalar => ±×·¹ÀÌ½ºÄÉÀÏ ¿µ»óÀÏ °æ¿ì Ã¹ ¹øÂ° ¿ø¼Ò¿¡ ÀúÀåµÊ.
-        threshold(toUse, toUse, 0, 255, THRESH_BINARY | THRESH_OTSU); //(4) ÀÌÁøÈ­
-        int lable_cnt = connectedComponentsWithStats(toUse, labels, stats, centroids); //(5) ·¹ÀÌºí¸µ
+        toUse = frame(Rect(0, frame.rows * 3 / 4, frame.cols, frame.rows / 4)); //(1) ì˜ìƒì˜ ì•„ë«ë¶€ë¶„ 1/4
+        cvtColor(toUse, toUse, COLOR_BGR2GRAY); //(2) ê·¸ë ˆì´ìŠ¤ì¼€ì¼ì˜ìƒìœ¼ë¡œ ë³€í™˜
+        toUse += 100 - mean(toUse)[0]; //(3) ì˜ìƒì˜ í‰ê· ë°ê¸°ë¥¼ ì›í•˜ëŠ” ê°’ìœ¼ë¡œ ì¡°ì •
+        //ê²°ê³¼ì˜ìƒì˜ í”½ì…€ê°’ = ì…ë ¥ì˜ìƒì˜ í”½ì…€ê°’ + (ì›í•˜ëŠ” í‰ê·  ë°ê¸°ê°’ - ì…ë ¥ì˜ìƒì˜ í‰ê· ë°ê¸°)
+        //mean()ì˜ ë°˜í™˜í˜•ì€ Scalar => ê·¸ë ˆì´ìŠ¤ì¼€ì¼ ì˜ìƒì¼ ê²½ìš° ì²« ë²ˆì§¸ ì›ì†Œì— ì €ì¥ë¨.
+        threshold(toUse, toUse, 0, 255, THRESH_BINARY | THRESH_OTSU); //(4) ì´ì§„í™”
+        int lable_cnt = connectedComponentsWithStats(toUse, labels, stats, centroids); //(5) ë ˆì´ë¸”ë§
         cvtColor(toUse, toUse, COLOR_GRAY2BGR);
 
         vector<Info> v;
-        for (int i = 1; i < lable_cnt; i++) { //'0'Àº ¹è°æ
-            double* p = centroids.ptr<double>(i); //centroids Çà·ÄÀÇ ±íÀÌ: CV_64F(double)
+        for (int i = 1; i < lable_cnt; i++) { //'0'ì€ ë°°ê²½
+            double* p = centroids.ptr<double>(i); //centroids í–‰ë ¬ì˜ ê¹Šì´: CV_64F(double)
             int* q = stats.ptr<int>(i);
 
             if (q[4] > 100) {
@@ -75,13 +75,13 @@ int main(void)
                 v.push_back(Info(i, distance));
             }
         }
-        sort(v.begin(), v.end(), compare_info); //¿À¸§Â÷¼ø
+        sort(v.begin(), v.end(), compare_info); //ì˜¤ë¦„ì°¨ìˆœ
 
-        double* p = centroids.ptr<double>(v[0].get_index()); //ÇöÀç ÁÂÇ¥¿¡¼­ °¡Àå °¡±î¿î °´Ã¼ÀÇ ¹«°ÔÁß½É ÁÂÇ¥
-        present_point = Point2d(p[0], p[1]); //ÇöÀçÁÂÇ¥ ÃÊ±âÈ­
+        double* p = centroids.ptr<double>(v[0].get_index()); //í˜„ì¬ ì¢Œí‘œì—ì„œ ê°€ì¥ ê°€ê¹Œìš´ ê°ì²´ì˜ ë¬´ê²Œì¤‘ì‹¬ ì¢Œí‘œ
+        present_point = Point2d(p[0], p[1]); //í˜„ì¬ì¢Œí‘œ ì´ˆê¸°í™”
 
         distance = sqrt(pow((present_point.x - past_point.x), 2) + pow((present_point.y - past_point.y), 2));
-        //if(distance > toUse.rows / 3) { //Ä«¸Ş¶ó°¡ 30fps·Î Àü´ŞÇÏ´Âµ¥ ¹°¸®ÀûÀ¸·Î ÀÌµ¿ÀÌ °¡´ÉÇÏÁö ¾ÊÀ» ¶§
+        //if(distance > toUse.rows / 3) { //ì¹´ë©”ë¼ê°€ 30fpsë¡œ ì „ë‹¬í•˜ëŠ”ë° ë¬¼ë¦¬ì ìœ¼ë¡œ ì´ë™ì´ ê°€ëŠ¥í•˜ì§€ ì•Šì„ ë•Œ
         if ((abs(present_point.x - past_point.x) > toUse.cols/2) || (abs(present_point.y - past_point.y) > toUse.rows/2)) {
             present_point = past_point;
             cout << "distance : " << distance << endl;
@@ -104,9 +104,9 @@ int main(void)
         //int *q = stats.ptr<int>(v[0].get_index());
         //rectangle(toUse, Rect(q[0], q[1], q[2], q[3]), Scalar(0,0,255));
 
-        past_point = present_point; //°ú°ÅÁÂÇ¥ ÃÊ±âÈ­
+        past_point = present_point; //ê³¼ê±°ì¢Œí‘œ ì´ˆê¸°í™”
 
-        imshow("¿øº»", frame);
+        imshow("ì›ë³¸", frame);
         imshow("toUse", toUse);
 
         waitKey(1); //usleep(30 * 1000);
