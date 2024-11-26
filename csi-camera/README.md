@@ -3,8 +3,10 @@
 ### gstreamer
 <img src="https://github.com/user-attachments/assets/ec045313-7ef8-4cac-94df-2187947d34fb" width="60%" height="60%"/>
 
+```
 (1) csi camera(IMX219) -> jetson nano
 (2) jetson nano -> window
+```
 
 ---
 
