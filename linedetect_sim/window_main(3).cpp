@@ -4,8 +4,8 @@ using namespace std;
 using namespace cv;
 
 void img_adj(VideoCapture& source, Mat& frame, Mat& toUse);
-void detection(const Mat& toUse, Mat& stats, Mat& centroids, Point& chase_point, Point& subPoint);
-void mark(const Mat& toUse, Mat& stats, const Mat& centroids, const Point& chase_point);
+int detection(const Mat& toUse, Mat& stats, Mat& centroids, Point& chase_point, Point& subPoint);
+void mark(Mat& toUse, int cnt, Mat& stats, const Mat& centroids, const Point& chase_point);
 
 int main(void) {
     VideoCapture source("7_lt_ccw_100rpm_in.mp4");
@@ -17,11 +17,11 @@ int main(void) {
 
     while (true)
     {
-        img_adj(source, frame, toUse); //»ç¿ëÇÒ ÀÌ¹ÌÁö Á¶Á¤
+        img_adj(source, frame, toUse); //ì‚¬ìš©í•  ì´ë¯¸ì§€ ì¡°ì •
         if (toUse.empty()) { cerr << "Empty 'toUse' frame in detection or mark!" << endl; break; }
 
-        detection(toUse, stats, centroids, chase_point, subPoint);
-        mark(toUse, stats, centroids, chase_point);
+        int cnt = detection(toUse, stats, centroids, chase_point, subPoint);
+        mark(toUse, cnt, stats, centroids, chase_point);
 
         error = (toUse.cols / 2) - chase_point.x;
         cout << "error:" << error << ", time: " << endl;
@@ -35,43 +35,42 @@ int main(void) {
     return 0;
 }
 
-//ÀÌ¹ÌÁö Á¶Á¤
+//ì´ë¯¸ì§€ ì¡°ì •
 void img_adj(VideoCapture& source, Mat& frame, Mat& toUse) {
     source >> frame;
     if (frame.empty()) { cerr << "Empty frame encountered!" << endl; return; }
 
-    toUse = frame(Rect(0, frame.rows * 3 / 4, frame.cols, frame.rows / 4)); //(1) ¿µ»óÀÇ ¾Æ·§ºÎºĞ 1/4
-    cvtColor(toUse, toUse, COLOR_BGR2GRAY); //(2) ±×·¹ÀÌ½ºÄÉÀÏ¿µ»óÀ¸·Î º¯È¯
-    toUse += 100 - mean(toUse)[0]; //(3) ¿µ»óÀÇ Æò±Õ¹à±â¸¦ ¿øÇÏ´Â °ªÀ¸·Î Á¶Á¤
-    //°á°ú¿µ»óÀÇ ÇÈ¼¿°ª = ÀÔ·Â¿µ»óÀÇ ÇÈ¼¿°ª + (¿øÇÏ´Â Æò±Õ ¹à±â°ª - ÀÔ·Â¿µ»óÀÇ Æò±Õ¹à±â)
-    //mean()ÀÇ ¹İÈ¯ÇüÀº Scalar => ±×·¹ÀÌ½ºÄÉÀÏ ¿µ»óÀÏ °æ¿ì Ã¹ ¹øÂ° ¿ø¼Ò¿¡ ÀúÀåµÊ.
-    threshold(toUse, toUse, 0, 255, THRESH_BINARY | THRESH_OTSU); //(4) ÀÌÁøÈ­
+    toUse = frame(Rect(0, frame.rows * 3 / 4, frame.cols, frame.rows / 4)); //(1) ì˜ìƒì˜ ì•„ë«ë¶€ë¶„ 1/4
+    cvtColor(toUse, toUse, COLOR_BGR2GRAY); //(2) ê·¸ë ˆì´ìŠ¤ì¼€ì¼ì˜ìƒìœ¼ë¡œ ë³€í™˜
+    toUse += 100 - mean(toUse)[0]; //(3) ì˜ìƒì˜ í‰ê· ë°ê¸°ë¥¼ ì›í•˜ëŠ” ê°’ìœ¼ë¡œ ì¡°ì •
+    //ê²°ê³¼ì˜ìƒì˜ í”½ì…€ê°’ = ì…ë ¥ì˜ìƒì˜ í”½ì…€ê°’ + (ì›í•˜ëŠ” í‰ê·  ë°ê¸°ê°’ - ì…ë ¥ì˜ìƒì˜ í‰ê· ë°ê¸°)
+    //mean()ì˜ ë°˜í™˜í˜•ì€ Scalar => ê·¸ë ˆì´ìŠ¤ì¼€ì¼ ì˜ìƒì¼ ê²½ìš° ì²« ë²ˆì§¸ ì›ì†Œì— ì €ì¥ë¨.
+    threshold(toUse, toUse, 0, 255, THRESH_BINARY | THRESH_OTSU); //(4) ì´ì§„í™”
 }
 
 
-void detection(const Mat& toUse, Mat& stats, Mat& centroids, Point& chase_point, Point& subPoint) {
+int detection(const Mat& toUse, Mat& stats, Mat& centroids, Point& chase_point, Point& subPoint) {
     Mat label;
     int lable_cnt = connectedComponentsWithStats(toUse, label, stats, centroids);
-    cvtColor(toUse, toUse, COLOR_GRAY2BGR);  // ÀÌ¹ÌÁö¸¦ ÄÃ·¯·Î º¯È¯
 
-    int min_index = -1; //°¡Àå °¡±î¿î °´Ã¼ÀÇ ÀÎµ¦½º
-    int min_dist = toUse.rows; //ÃÖ¼Ò °Å¸®
+    int min_index = -1; //ê°€ì¥ ê°€ê¹Œìš´ ê°ì²´ì˜ ì¸ë±ìŠ¤
+    int min_dist = toUse.rows; //ìµœì†Œ ê±°ë¦¬
 
-    // °´Ã¼µéÀ» ¹İº¹ÇÏ¸é¼­ °¡Àå °¡±î¿î °´Ã¼¸¦ Ã£±â
+    // ê°ì²´ë“¤ì„ ë°˜ë³µí•˜ë©´ì„œ ê°€ì¥ ê°€ê¹Œìš´ ê°ì²´ë¥¼ ì°¾ê¸°
     for (int i = 1; i < lable_cnt; i++) {
-        int area = stats.at<int>(i, CC_STAT_AREA);  // °´Ã¼ÀÇ ¸éÀû(4)
-        if (area > 120) {  // ¸éÀûÀÌ 120º¸´Ù Å« °´Ã¼¸¸ Å½Áö
-            Point center(cvRound(centroids.at<double>(i, 0)), cvRound(centroids.at<double>(i, 1)));  // °´Ã¼ Áß½É ÁÂÇ¥
+        int area = stats.at<int>(i, 4);  // ê°ì²´ì˜ ë©´ì (CC_STAT_AREA)
+        if (area > 120) {  // ë©´ì ì´ 120ë³´ë‹¤ í° ê°ì²´ë§Œ íƒì§€
+            Point center(cvRound(centroids.at<double>(i, 0)), cvRound(centroids.at<double>(i, 1)));  // ê°ì²´ ì¤‘ì‹¬ ì¢Œí‘œ
 
-            // °´Ã¼ Áß½É°ú chase_point °£ÀÇ °Å¸® °è»ê
+            // ê°ì²´ ì¤‘ì‹¬ê³¼ chase_point ê°„ì˜ ê±°ë¦¬ ê³„ì‚°
             int dist = norm(center - chase_point);
             if (dist < 140 && dist < min_dist) {
-                min_dist = dist; min_index = i; // ÃÖ¼Ò °Å¸® ¹× ÇØ´ç index °»½Å
+                min_dist = dist; min_index = i; // ìµœì†Œ ê±°ë¦¬ ë° í•´ë‹¹ index ê°±ì‹ 
             }
         }
     }
 
-    // °¡Àå °¡±î¿î °´Ã¼(30msµ¿¾È dist°¡ 140 ¹Ì¸¸)°¡ ÀÖÀ¸¸é chase_point·Î ¾÷µ¥ÀÌÆ®
+    // ê°€ì¥ ê°€ê¹Œìš´ ê°ì²´(30msë™ì•ˆ distê°€ 140 ë¯¸ë§Œ)ê°€ ìˆìœ¼ë©´ chase_pointë¡œ ì—…ë°ì´íŠ¸
     if (min_index > 0) {
         chase_point = Point(cvRound(centroids.at<double>(min_index, 0)), cvRound(centroids.at<double>(min_index, 1)));
     }
@@ -80,24 +79,27 @@ void detection(const Mat& toUse, Mat& stats, Mat& centroids, Point& chase_point,
         cout << "faaaaaaaaaaaaaaaaaaaaaaaaaaaaar" << endl;
     }
     //subPoint = chase_point;
+
+    return lable_cnt;
 }
 
 
-void mark(const Mat& toUse, Mat& stats, const Mat& centroids, const Point& chase_point) {
-    for (int i = 1; i < stats.rows; i++) {
-        // ¸éÀûÀÌ ¼³Á¤µÈ °ªº¸´Ù Å« °´Ã¼¸¸ Ç¥½Ã
+void mark(Mat& toUse, int cnt, Mat& stats, const Mat& centroids, const Point& chase_point) {
+    cvtColor(toUse, toUse, COLOR_GRAY2BGR);  // ì»¬ëŸ¬ì˜ìƒìœ¼ë¡œ ë³€í™˜
+
+    for (int i = 1; i < cnt; i++) {
         int area = stats.at<int>(i, 4); //CC_STAT_AREA
         if (area > 120) {
             Point center(cvRound(centroids.at<double>(i, 0)), cvRound(centroids.at<double>(i, 1)));
-            Scalar color = (center.x == chase_point.x) ? Scalar(0,0,255) : Scalar(255,0,0);
+            Scalar color = (center.x == chase_point.x) ? Scalar(0, 0, 255) : Scalar(255, 0, 0);
             //if (center.x != chase_point.x) { Scalar color = OBJECT_COLOR; }
 
             //mark
-            int* q = stats.ptr<int>(i); //"const int*" Çü½ÄÀÇ °ªÀ» »ç¿ëÇÏ¿© "int*"Çü½ÄÀÇ ¿£ÅÍÆ¼¸¦ ÃÊ±âÈ­ÇÒ ¼ö ¾øÀ½ => const(X) Mat& stats
+            int* q = stats.ptr<int>(i); //"const int*" í˜•ì‹ì˜ ê°’ì„ ì‚¬ìš©í•˜ì—¬ "int*"í˜•ì‹ì˜ ì—”í„°í‹°ë¥¼ ì´ˆê¸°í™”í•  ìˆ˜ ì—†ìŒ => const(X) Mat& stats
             rectangle(toUse, Rect(q[0], q[1], q[2], q[3]), color, 2);
             circle(toUse, center, 5, color, -1);
         }
     }
     //chase_point
-    circle(toUse, chase_point, 5, Scalar(0,0,255), -1);
+    circle(toUse, chase_point, 5, Scalar(0, 0, 255), -1);
 }
