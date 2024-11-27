@@ -35,7 +35,7 @@ int main(void)
 {
     signal(SIGINT, ctrlc); // SIGINT 신호를 잡아내는 시그널 핸들러 설정
 
-    VideoCapture source("7_lt_ccw_100rpm_in.mp4"); //CAP_FFMPEG
+    VideoCapture source("7_lt_ccw_100rpm_in.mp4"); //CAP_FFMPEG 사용X (FFMPEG 라이브러리를 사용하여 비디오 파일 또는 스트림을 열고 녹화)
     if (!source.isOpened()) {
         cout << "Video open error" << endl; return -1;
     }
