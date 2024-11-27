@@ -1,7 +1,7 @@
 CX = g++
 CXFLAGS = -g -Wall
 CXFLAGS += `pkg-config opencv4 --cflags` -I/usr/local/include/dynamixel_sdk
-LDFLAGS = -ldxl_x64_cpp `pkg-config opencv4 --libs`
+LDFLAGS = `pkg-config opencv4 --libs` -ldxl_x64_cpp 
 
 TARGET = manualdrive
 OBJS = main.o dxl.o
