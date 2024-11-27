@@ -4,5 +4,5 @@
 - 11.05(수) : dynamixel
 - 11.12(화) : cam-act
 - 11.19(화) : linedetect_sim
-- 11.26(화) : linetracer_sim
+- 11.26(화) : linetracer_sim & linetracer_track
   
