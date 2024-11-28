@@ -4,5 +4,5 @@
 - 11.05(수) : [dynamixel](https://github.com/jogeonuuuu/smart-vision/tree/main/dynamixel)
 - 11.12(화) : [cam-act](https://github.com/jogeonuuuu/smart-vision/tree/main/cam-act)
 - 11.19(화) : [linedetect_sim](https://github.com/jogeonuuuu/smart-vision/tree/main/linedetect_sim)
-- 11.26(화) : [linetracer_sim]() & [linetracer_track](https://github.com/jogeonuuuu/smart-vision/tree/main/linetracer_sim)
+- 11.26(화) : [linetracer_sim](https://github.com/jogeonuuuu/smart-vision/tree/main/linetracer_sim) & [linetracer_track]
   
