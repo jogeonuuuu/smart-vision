@@ -7,7 +7,7 @@
  ```
 
 
-<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/>
 
 
 Makefile
@@ -57,7 +57,7 @@ https://github.com/jogeonuuuu/smart-vision/blob/4441b05cd43aafd5ccb6ef5e6a42592b
 - **Line 16~18** : 'clean'은 파일이 아님. target을 만들기위한 prerequisites(필요항목)이 되는 오류를 방지하기위해 명시
 
 
-<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/>
 
 
 실행결과
