@@ -17,7 +17,7 @@ int main()
         nvvidconv ! nvv4l2h264enc insert-sps-pps=true ! \
         h264parse ! rtph264pay pt=96 ! \
         udpsink host=203.234.58.165 port=8001 sync=false";
-        VideoWriter writer1(dst1, 0, (double)30, Size(640, 360), true);
+    VideoWriter writer1(dst1, 0, (double)30, Size(640, 360), true);
     if (!writer1.isOpened()) { cerr << "Writer1 open failed!" << endl; return -1;}
     
     string dst2 = "appsrc ! videoconvert ! video/x-raw, format=BGRx ! \
