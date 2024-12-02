@@ -36,18 +36,9 @@ int main(void)
 {
     signal(SIGINT, ctrlc); // SIGINT 신호를 잡아내는 시그널 핸들러 설정
  
-    /*string src = "nvarguscamerasrc sensor-id=0 ! \
-        video/x-raw(memory:NVMM), width=(int)640, height=(int)360, \
-        format=(string)NV12 ! nvvidconv flip-method=0 ! video/x-raw, \
-        width=(int)640, height=(int)360, format=(string)BGRx ! \
-        videoconvert ! video/x-raw, format=(string)BGR ! appsink";
-    VideoCapture source(src, CAP_GSTREAMER);*/
-    //string src = "/home/jetson/jogeonuuuu/line_tracer/5_lt_cw_100rpm_out.mp4";
-    string src = "/home/jetson/jogeonuuuu/line_tracer/7_lt_ccw_100rpm_in.mp4";
-    VideoCapture source(src, CAP_FFMPEG);
-    if (!source.isOpened()) { 
-        cout << "Camera error" << endl; return -1; 
-    }
+    string src = "/home/jetson/jogeonuuuu/7_lt_ccw_100rpm_in.mp4";
+    VideoCapture source(src);
+    if (!source.isOpened()) { cout << "Camera error" << endl; return -1; }
  
     string dst1 = "appsrc ! videoconvert ! video/x-raw, format=BGRx ! \
         nvvidconv ! nvv4l2h264enc insert-sps-pps=true ! \
@@ -59,9 +50,7 @@ int main(void)
         udpsink host=203.234.58.165 port=8002 sync=false";
     VideoWriter writer1(dst1, 0, (double)30, Size(640, 360), true);
     VideoWriter writer2(dst2, 0, (double)30, Size(640, 90), true);
-    if (!writer1.isOpened() && !writer2.isOpened()) { 
-        cerr << "Writer open failed!" << endl; return -1;
-    }
+    if (!writer1.isOpened() && !writer2.isOpened()) { cerr << "Writer open failed!" << endl; return -1; }
  
     Mat frame, toUse;
     Mat labels, stats, centroids;
@@ -69,8 +58,8 @@ int main(void)
     Point2d past_point(320, 45), present_point(320, 45); //과거 및 현재 좌표
     double distance; //중점(보드으로부터 가장 가까운 객체와의 거리
 
-    struct timeval start,end1;
-    double time1;
+    struct timeval start, end;
+    double time;
     while(true)
     {
         gettimeofday(&start,NULL);
@@ -109,15 +98,13 @@ int main(void)
  
         distance = sqrt(pow((present_point.x - past_point.x), 2) + pow((present_point.y - past_point.y), 2));
         //if(distance > toUse.rows / 3) { //카메라가 30fps로 전달하는데 물리적으로 이동이 가능하지 않을 때
-        if((abs(present_point.x - past_point.x) > toUse.cols/4) || (abs(present_point.y - past_point.y) > toUse.rows/4)) {
+        if((abs(present_point.x - past_point.x) > toUse.cols/2) || (abs(present_point.y - past_point.y) > toUse.rows/2)) {
             present_point = past_point;
             //cout << "distance : " << distance << endl;
         }
  
         int error = toUse.cols/2 - present_point.x;
- 
-        cout << "error: " << error;
-        cout << " / Point: " << present_point << endl;
+        cout << "error: " << error << " / Point: " << present_point << endl;
  
         //Blue
         for(int j=1; j<v.size(); j++) {
@@ -136,11 +123,10 @@ int main(void)
         
         past_point = present_point; //과거좌표 초기화
 
-
         usleep(30*1000);
-        gettimeofday(&end1,NULL);
-        time1 = end1.tv_sec-start.tv_sec + (end1.tv_usec-start.tv_usec)/1000000.0;
-        cout << "time:" << time1 << endl;
+        gettimeofday(&end,NULL);
+        time = end.tv_sec-start.tv_sec + (end.tv_usec-start.tv_usec)/1000000.0;
+        cout << "time:" << time << endl;
     }
     return 0;
 }
