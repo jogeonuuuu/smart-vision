@@ -21,7 +21,7 @@ Makefile
 https://github.com/jogeonuuuu/smart-vision/blob/4441b05cd43aafd5ccb6ef5e6a42592b6376f7b9/cam-act/Makefile#L1-L18
 - **Line 3** & **Line 4** :
   - **표준 라이브러리**가 아닌 **사용자 라이브러리**를 사용하기 위해서는 GCC 명령어 설정이 필요
-    ``` c++
+    ```
     <GCC 명령어 옵션>
     
     - I<header_dir> : 사용자 라이브러리의 헤더파일 경로 지정 (선행처리 단계)
