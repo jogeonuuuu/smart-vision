@@ -1,6 +1,5 @@
 
-
-### gstreamer
+### gstreamer를 통한 실시간 스트리밍
 <img src="https://github.com/user-attachments/assets/ec045313-7ef8-4cac-94df-2187947d34fb" width="60%" height="60%"/>
 
 ```
@@ -8,9 +7,8 @@
 (2) jetson nano -> window
 ```
 
----
 
-#### (1) csi camera(IMX219) -> jetson nano
+> #### (1) csi camera(IMX219) -> jetson nano
 > <img src="https://github.com/user-attachments/assets/bf35c362-22b5-477c-82ce-e7f7bc17ce24" width="50%" height="50%"/>
 > https://github.com/jogeonuuuu/smart-vision/blob/ae718efa64e6b0df40854ad1e9748df9152b499e/main.cpp#L7-L13
 >
@@ -20,9 +18,8 @@
 > - 영상 크기 : 640 x 360
 > - 포맷 : BGR
 > ```
-
-
-#### (2) jetson nano -> window
+> 
+> #### (2) jetson nano -> window
 > <img src="https://github.com/user-attachments/assets/735c14a5-b10f-4cfe-9d02-5f00214f1a20" width="50%" height="50%"/>
 > https://github.com/jogeonuuuu/smart-vision/blob/ae718efa64e6b0df40854ad1e9748df9152b499e/main.cpp#L16-L20
 > 
