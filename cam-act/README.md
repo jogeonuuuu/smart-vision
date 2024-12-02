@@ -13,7 +13,7 @@
 Makefile
 ----
 <p align="center">
-<img src="https://github.com/user-attachments/assets/d6599164-92c1-414a-b820-04db1a2fdfec" width="50%" height="50%"/>
+<img src="https://github.com/user-attachments/assets/2630bf1a-b455-4bde-912d-f4c02d6b84d6" width="50%" height="50%"/>
 <img src="https://github.com/user-attachments/assets/1fbce266-5b28-4726-8d9e-787ea6671a99" width="50%" height="50%"/>
 </p>
 
@@ -21,13 +21,17 @@ Makefile
 https://github.com/jogeonuuuu/smart-vision/blob/4441b05cd43aafd5ccb6ef5e6a42592b6376f7b9/cam-act/Makefile#L1-L18
 - **Line 3** & **Line 4** :
   - **표준 라이브러리**가 아닌 **사용자 라이브러리**를 사용하기 위해서는 GCC 명령어 설정이 필요
-    ```
+    ``` c++
     <GCC 명령어 옵션>
     
     - I<header_dir> : 사용자 라이브러리의 헤더파일 경로 지정 (선행처리 단계)
-    - l<lib_name> : (정적)라이브러리 파일(옵션)
-    - L<lib_dir(path)> : (정적)라이브러리 파일 경로, 동적라이브러리(so) 경로는 라이브러리 설치시(/usr/lib 아래에 설치됨) 운영체제 설정파일에 저장되어 설정이 필요없음(/etc/ld.so.conf)
+    - l<lib_name> : 라이브러리 (목적)파일
+    - L<lib_dir(path)> : 라이브러리 (목적)파일 경로
+                         동적라이브러리(so) 경로는 라이브러리 설치시 "/usr/lib" 아래에 설치됨
+                         운영체제 설정파일에 저장되어 설정이 필요없음 (/etc/ld.so.conf)
     ```
+    [시스템 설정 파일(/etc/ld.so.conf)](https://blog.naver.com/demonic3540/222396863191)
+    
   - 컴파일러가 헤더파일 경로, 라이브러리 목적파일 및 경로를 모르기 때문에 직접 설정을 해주는 것
 
   
