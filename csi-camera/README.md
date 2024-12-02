@@ -24,7 +24,7 @@
 > https://github.com/jogeonuuuu/smart-vision/blob/ae718efa64e6b0df40854ad1e9748df9152b499e/main.cpp#L16-L20
 > 
 > ```
-> 네트워크를 통해 전송하기 때문에 다음과 같은 옵션을 줌.
+> 네트워크를 통해 전송하기 때문에 다음과 같은 옵션을 줌
 > - 전송할 ip주소: 203.234.58.155
 > - 포트번호: XXXX
 > ```
@@ -39,4 +39,6 @@
 <img src="https://github.com/user-attachments/assets/b182f596-a090-4c8f-bc7d-4d5fd93120fc" width="70%" height="70%"/>
 
 '이미지 가져옴 -> 이미지 처리 -> 이미지 전송' => 평균 33ms
-제어를 하기위해서는 30fps정도의 속도로 처리해야 됨. 
+제어를 하기위해서는 30fps정도의 속도로 처리해야 됨
+
+실시간으로 받아온 이미지를 처리 후 제어하는데 
