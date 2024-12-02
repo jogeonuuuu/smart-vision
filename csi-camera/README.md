@@ -30,16 +30,17 @@
 > ```
 
 ---
-
 ### 결과영상
-- Jetson board에서 Gstreamer Server 실행
-- windows의 powershell에서 gstreamer client 실행
+> - Jetson board에서 Gstreamer Server 실행
+> - windows의 powershell에서 gstreamer client 실행
+>
+> ```
+> 실시간으로 받아온 이미지를 처리 후 제어하는데 **초당 30번. 즉, 한 번당 33ms** 이상이 되면 안 됨
+> ```
+> 
+> ![image](https://github.com/user-attachments/assets/4f8d13a5-752c-4144-a012-e4f1265f495a)
+> <img src="https://github.com/user-attachments/assets/b182f596-a090-4c8f-bc7d-4d5fd93120fc" width="70%" height="70%"/>
+>
 
-![image](https://github.com/user-attachments/assets/4f8d13a5-752c-4144-a012-e4f1265f495a)
-<img src="https://github.com/user-attachments/assets/b182f596-a090-4c8f-bc7d-4d5fd93120fc" width="70%" height="70%"/>
 
-'이미지 가져옴 -> 이미지 처리 -> 이미지 전송' => 평균 33ms
 
-제어를 하기위해서는 30fps정도의 속도로 처리해야 됨
-
-실시간으로 받아온 이미지를 처리 후 제어하는데 
