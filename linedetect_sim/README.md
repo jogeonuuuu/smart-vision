@@ -10,14 +10,14 @@
 
 #### //mylib.hpp
 
-<line 15>
+##### <line 15>
 Mat 객체인 stats의 label_index 행에 대한 주소.
 해당 행(label_index)에는 label_index 대한 **통계 정보** (x,y,width,height,area)가 들어있음.
 (stat_ptr[0] ~ stat_ptr[4])
 
 <br/>
 
-<line 16>
+##### <line 16>
 Mat 객체인 centroids의 label_index 행에 대한 주소.
 해당 행(label_index)에는 label_index 대한 **무계 중심 좌표 정보** (x,y)가 들어있음.
 (centroid_ptr[0] ~ centroid_ptr[1])
