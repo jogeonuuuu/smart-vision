@@ -8,7 +8,8 @@
 </p>
 
 
-//mylib.hpp
+### //mylib.hpp
+
 <line 15>
 Mat 객체인 stats의 label_index 행에 대한 주소.
 해당 행(label_index)에는 label_index 대한 **통계 정보** (x,y,width,height,area)가 들어있음.
