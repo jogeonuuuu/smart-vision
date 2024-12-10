@@ -1,4 +1,4 @@
-[시연 동영상](https://www.youtube.com/watch?v=tSsMGaWjzh0)
+[시연 동영상_inline](https://www.youtube.com/watch?v=tSsMGaWjzh0)
 
 
 <p align="center">
