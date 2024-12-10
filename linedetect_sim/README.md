@@ -1,5 +1,5 @@
 [시연 동영상_inline](https://www.youtube.com/watch?v=tSsMGaWjzh0)
-
+[시연 동영상_outline](https://www.youtube.com/watch?v=yzUuTJRe2NU)
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/d17dae01-d5d2-4db6-825f-51a3d8c3dcd9" width="50%" height="50%"/>
