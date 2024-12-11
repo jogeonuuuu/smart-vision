@@ -58,9 +58,10 @@ namespace jgw {
         }
 
         //카메라가 30fps로 전달하는데 물리적으로 이동이 가능하지 않을 때
-        //distance = sqrt(pow((present_point.x - past_point.x), 2) + pow((present_point.y - past_point.y), 2));
-        //if(distance > toUse.rows / 3)
-        if((abs(present_point.x - past_point.x) > toUse.cols/2) || (abs(present_point.y - past_point.y) > toUse.rows/2)) {
+        distance = sqrt(pow((present_point.x - past_point.x), 2) + pow((present_point.y - past_point.y), 2));
+        if(distance >  || (abs(present_point.y - past_point.y) > toUse.rows/2)) //toUse.rows / 3
+        //if((abs(present_point.x - past_point.x) > toUse.cols/2) || (abs(present_point.y - past_point.y) > toUse.rows/2)) 
+        {
             present_point = past_point;
             //cout << "distance : " << distance << endl;
 
