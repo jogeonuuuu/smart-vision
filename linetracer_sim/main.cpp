@@ -70,8 +70,8 @@ int main(void)
         cout << "error: " << error << " / Point: " << line_point << endl;
 
         //Dynamixel
-        left_vel = (200 - (0.32 * error));
-        right_vel = -(200 + (0.32 * error));
+        left_vel = (100 - (1.0 * error));
+        right_vel = -(100 + (1.0 * error));
         if(driving_start) dxl.setVelocity(left_vel, right_vel);
 
         //Mark
